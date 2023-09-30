@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { loadUserProfile } from '../actions/auth'; // Replace with the correct action import
+import './Profile.css'; // Import the CSS file
 
 const Profile = ({ loadUserProfile, profile, email }) => {
     useEffect(() => {
@@ -28,6 +29,13 @@ const Profile = ({ loadUserProfile, profile, email }) => {
 
     return (
         <div className="card">
+            {/* Add profile picture box */}
+            {profile && profile.picture ? (
+                <div className="profile-picture-box">
+                    <img src={profile.picture} alt="Profile" className="profile-picture" />
+                </div>
+            ) : null}
+
             {isEditing ? (
                 <div>
                     {/* Input fields for editing */}
@@ -51,7 +59,7 @@ const Profile = ({ loadUserProfile, profile, email }) => {
                             <p>Designation: {profile.designation}</p>
                             <p>Organization: {profile.organization}</p>
                             <p>Location: {profile.location}</p>
-                            {/* Add profile image and edit button */}
+                            {/* Add edit button */}
                             <button className="me-2" onClick={handleEdit}>
                                 Edit
                             </button>

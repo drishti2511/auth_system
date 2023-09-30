@@ -43,3 +43,21 @@ body {
     font-size: 1.2rem;
     margin-top: 20px;
 }
+
+.profile-picture-box {
+    position: absolute;
+    top: 20px; /* Adjust top margin as needed */
+    right: 20px; /* Adjust right margin as needed */
+    padding: 10px; /* Adjust padding as needed */
+    background-color: #ffffff; /* Background color of the box */
+    border: 1px solid #e0e0e0; /* Border styles */
+    border-radius: 50%; /* Make it a circle */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+}
+
+.profile-picture {
+    width: 100px; /* Adjust the width and height as needed */
+    height: 100px;
+    border-radius: 50%; /* Ensure it's a circle */
+    /* Add any additional styles, such as background-image or background-color */
+}
