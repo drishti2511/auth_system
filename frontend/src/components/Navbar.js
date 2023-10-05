@@ -35,6 +35,12 @@ const Navbar = ({ logout, isAuthenticated }) => {
             <li className='nav-item'>
                 <Link className='nav-link' to='/profile' align='left'>Profile</Link>
             </li>
+            <li className='nav-item'>
+                <Link className='nav-link' to='/select-frequency' align='left'>Bands Available</Link>
+            </li>
+            <li className='nav-item'>
+                <Link className='nav-link' to='/add-del-frequency' align='left'>Add/Delete Frequency</Link>
+            </li>
         </Fragment>
 
     );

@@ -21,7 +21,10 @@ import {
     CREATE_PROFILE_FAIL,
     CREATE_PROFILE_SUCCESS,
     USER_PROFILE_LOADED_SUCCESS,
-    USER_PROFILE_LOADED_FAIL
+    USER_PROFILE_LOADED_FAIL,
+    SAVE_PROFILE_IMAGE,
+    FREQ_BAND_UPLOAD_SUCCESS,
+    FREQ_BAND_UPLOAD_FAIL
 } from '../actions/types';
 
 const initialState = {
@@ -32,7 +35,9 @@ const initialState = {
     user: null,
     profile:null,
     loading:true,
-    email: localStorage.getItem('email')
+    freq_band:null,
+    email: localStorage.getItem('email'),
+    profileImage :localStorage.getItem('profileImage')
 };
 
 export default function(state = initialState, action) {
@@ -118,6 +123,17 @@ export default function(state = initialState, action) {
         case ACTIVATION_FAIL:
             return {
                 ...state
+            }
+        case SAVE_PROFILE_IMAGE:
+            localStorage.setItem('profileImage',payload)
+            return {
+                ...state,
+                profileImage: payload
+            }
+        case FREQ_BAND_UPLOAD_SUCCESS:
+            return {
+                ...state,
+                freq_band: payload
             }
         default:
             return state

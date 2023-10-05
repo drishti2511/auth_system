@@ -65,10 +65,11 @@ class UserProfileAccount(AbstractBaseUser, PermissionsMixin):
     organization = models.CharField(max_length=255)
     radiodetails = models.CharField(max_length=255)
     radiosetdetails = models.CharField(max_length=255)
+    profileImage = models.ImageField(upload_to='profile_images/', blank=True, null=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=True)
     objects = ProfileAccountManager()
-    # groups = models.ManyToManyField(Group, verbose_name='groups', blank=True, related_name='user_profile_accounts_groups')
+    groups = models.ManyToManyField(Group, verbose_name='groups', blank=True, related_name='user_profile_accounts_groups')
     user_permissions = models.ManyToManyField(
         Permission,
         verbose_name='user permissions',
@@ -85,4 +86,22 @@ class UserProfileAccount(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
+
+
+
+class BandFrequency(AbstractBaseUser, PermissionsMixin):
+    user_band = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,null=True,default=None,related_name='band_frequency')
+    frequency_type = models.CharField(max_length=255)
+    frequency_fm = models.CharField(max_length=255)
+    frequency_to = models.CharField(max_length=255)
+    channel_spacing = models.CharField(max_length=255)
+    objects = UserAccount()
+    groups = models.ManyToManyField(Group, verbose_name='groups', blank=True, related_name='band_frequency_groups')
+    user_permissions = models.ManyToManyField(
+        Permission,
+        verbose_name='user permissions',
+        blank=True,
+        related_name='band_frequency_permissions'  # Unique related_name for UserProfileAccount
+    )
+    
 

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createprofile } from '../actions/auth';
-
+import ProfileImageUpload from './ProfileImageUpload';
 
 
 const CreateProfile = ({ createprofile,isProfileCreated }) => {
@@ -16,14 +16,24 @@ const CreateProfile = ({ createprofile,isProfileCreated }) => {
         radiodetails : '',
         radiosetdetails : '',
     });
+    
+    const [profileImage, setProfileImage] = useState(null);
 
     const { name, email, contact, designation, organization,radiodetails, radiosetdetails} = formData;
 
     const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
+    
+    const onImageSelect = (imageFile) => {
+        console.log('checking the value of profile image');
+        setProfileImage(imageFile); 
+        console.log(profileImage);// Set the selected image in the state
+      };
+
+      
 
     const onSubmit = e => {
         e.preventDefault();
-        createprofile(name, email, contact, designation, organization,radiodetails, radiosetdetails);
+        createprofile(name, email, contact, designation, organization,radiodetails, radiosetdetails,profileImage );
         setProfileCreated(true);
     };
 
@@ -113,6 +123,7 @@ const CreateProfile = ({ createprofile,isProfileCreated }) => {
                         required
                     />
                 </div>
+                {/* <ProfileImageUpload onImageSelect={onImageSelect} /> */}
                 <button className='btn btn-primary' type='submit'>Create Profile</button>
             </form>
         </div>

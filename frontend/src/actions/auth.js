@@ -23,7 +23,12 @@ import {
     CREATE_PROFILE_FAIL,
     CREATE_PROFILE_SUCCESS,
     USER_PROFILE_LOADED_FAIL,
-    USER_PROFILE_LOADED_SUCCESS
+    USER_PROFILE_LOADED_SUCCESS,
+    UPLOAD_PROFILE_IMAGE_SUCCESS,
+    UPLOAD_PROFILE_IMAGE_FAIL,
+    SAVE_PROFILE_IMAGE,
+    FREQ_BAND_UPLOAD_SUCCESS,
+    FREQ_BAND_UPLOAD_FAIL
 } from './types';
 
 
@@ -302,35 +307,41 @@ export const facebookAuthenticate = (state, code) => async dispatch => {
 
 
 // create-profile-function 
-export const createprofile = (name, email, contact, designation, organization, radiodetails,
-    radiosetdetails) => async dispatch => {
+export const createprofile = (name, email, contact, designation, organization, radiodetails, radiosetdetails, profileImage) => async (dispatch) => {
     const config = {
-        headers: {
-            'Content-Type': 'application/json'
-        }
+      headers: {
+        'Content-Type': 'multipart/form-data', // Use 'multipart/form-data' for file uploads
+      },
     };
-
-    const body = JSON.stringify({ name, email, contact, designation, organization, radiodetails,
-        radiosetdetails });
-    console.log(body);
-    try {
-        //
-        const res = await axios.post('http://localhost:8000/profiles/create/', body, config);
-        console.log('request posted');
-        dispatch({
-            type: CREATE_PROFILE_SUCCESS,
-            payload: res.data.name
-        });
-        // dispatch(load_profile());
-        console.log('payload dispatched');
-    } 
-    catch (err) {
-        console.error(err.response.data);
-        dispatch({
-            type: CREATE_PROFILE_FAIL
-        })
+  
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('email', email);
+    formData.append('contact', contact);
+    formData.append('designation', designation);
+    formData.append('organization', organization);
+    formData.append('radiodetails', radiodetails);
+    formData.append('radiosetdetails', radiosetdetails);
+    console.log('checking the value of profile image');
+    console.log(profileImage);
+    if (profileImage) {
+      formData.append('profileImage', profileImage); // Append the profile image to the form data
     }
-};
+    console.log(formData);
+    try {
+      const res = await axios.post('http://localhost:8000/profiles/create/', formData, config);
+      dispatch({
+        type: CREATE_PROFILE_SUCCESS,
+        payload: res.data.name,
+      });
+      // Dispatch any other actions as needed
+    } catch (err) {
+      console.error(err.response.data);
+      dispatch({
+        type: CREATE_PROFILE_FAIL,
+      });
+    }
+  };
 
 
 
@@ -371,3 +382,41 @@ export const loadUserProfile = (email) => async dispatch => {
 };
 
 
+
+// saving image url action 
+
+export const saveProfileImage = (imageUrl) => ({
+    type: SAVE_PROFILE_IMAGE,
+    payload: imageUrl,
+  });
+
+
+
+// add-delete frequency
+  export const adddelfreq = (frequency_type, frequency_fm, frequency_to, channel_spacing) => async dispatch => {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    };
+
+    const body = JSON.stringify({ frequency_type, frequency_fm, frequency_to, channel_spacing});
+    console.log(body);
+    try {
+        const res1 = await axios.get('google.com',config);
+        console.log(res1);
+        const res = await axios.post('http://localhost:8000/edit-frequency/', body, config);
+        console.log('request posted');
+        dispatch({
+            type: FREQ_BAND_UPLOAD_SUCCESS,
+            payload: res.data
+        });
+        console.log('payload dispatched');
+    } 
+    catch (err) {
+        console.log(err)
+        dispatch({
+            type: FREQ_BAND_UPLOAD_FAIL
+        })
+    }
+};

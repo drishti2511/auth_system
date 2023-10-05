@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import viewsets,generics
-from .models import UserProfileAccount
-from .serializers import UserProfileAccountSerializer
+from .models import UserProfileAccount, BandFrequency
+from .serializers import UserProfileAccountSerializer, BandFrequencySerializer
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from django.contrib.auth.decorators import login_required
@@ -20,24 +20,12 @@ class ProfileCreateView(generics.CreateAPIView):
     serializer_class = UserProfileAccountSerializer
     permission_classes = [AllowAny]
 
-# @login_required
-# def get_user_profile(request):
-#     print('get_user')
-#     user_profile = UserProfileAccount.objects.get(user=request.user)
-#     # user_profile = UserProfileAccount.objects.get(email='drishtiolf@gmail.com')   # Assuming you have a user field in your profile model.
-#     serializer = UserProfileAccountSerializer(user_profile)
-#     lookup_field = 'email'
-#     return Response(serializer.data)
-#     # profile_data = {
-#     #     "name": user_profile.name,
-#     #     "email": user_profile.email,
-#     #     "contact": user_profile.contact,
-#     #     "designation": user_profile.designation,
-#     #     "organization": user_profile.organization,
-#     #     # Add more fields as needed
-#     # }
-#     # print(user_profile.status_code)
-#     # return JsonResponse(profile_data)
+    def perform_create(self, serializer):
+        # Get the uploaded image from the request
+        profileImage = self.request.FILES.get('profile_image')
+        # Create a new user profile, including the profile image
+        serializer.save(profileImage=profileImage)
+
 
 @authentication_classes([])
 @permission_classes([AllowAny])
@@ -56,30 +44,15 @@ class UserProfileDetailView(generics.RetrieveAPIView):
         except UserProfileAccount.DoesNotExist:
             raise Http404("User profile not found")
 
-# class UserProfileDetailView(generics.RetrieveAPIView):
-#     serializer_class = UserProfileAccountSerializer
-
-#     def retrieve(self, request, *args, **kwargs):
-#         user_profile = request.user.user_accounts_groups  # Assuming UserProfileAccount is related to the user model
-#         serializer = UserProfileAccountSerializer(user_profile)
-#         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-# @api_view(['GET'])
-# @permission_classes([IsAuthenticated])
-# @login_required
-# def user_profile(request):
-#     user = UserProfileAccount.objects.get(user=request.user)
-#     profile_data = {
-#         "name": user.name,
-#         "email": user.email,
-#         "contact": user.contact,
-#         "designation": user.designation,
-#         "organization": user.organization,
-#         "radiodetails" : user.radiodetails,
-#         "radiosetdetails" : user.radiosetdetails,
-#         # Add more fields as needed
-#     }
-#     serializer = UserProfileAccountSerializer(profile_data)
-#     # return JsonResponse(profile_data)
-#     return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class BandFreqView(generics.CreateAPIView):
+    queryset = BandFrequency.objects.all()
+    serializer_class = BandFrequencySerializer
+    permission_classes = [AllowAny]
+   
+    def perform_create(self, serializer):
+        # Automatically set the student to the currently logged-in user
+        serializer.save(user_band=self.request.user)
