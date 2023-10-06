@@ -7,9 +7,13 @@ import CurrentLocation from './CurrentLocation';
 // import image
 
 
+<<<<<<< HEAD
 
 
 const Profile = ({ loadUserProfile, profile, email,profileImage }) => {
+=======
+const Profile = ({ loadUserProfile, profile, email }) => {
+>>>>>>> ebb549f (made the css of frontend, added location, now working on adding images)
     useEffect(() => {
         loadUserProfile(email);
     }, [loadUserProfile, email]);
@@ -17,21 +21,18 @@ const Profile = ({ loadUserProfile, profile, email,profileImage }) => {
     console.log('printing profile name');
     console.log(profile);
 
-
-    // console.log(profile.name);
+    //  console.log(profile.name);
     return (
         <div className="card">
             {profile ? (
                 <div className='container'>
                     <div className='container-profile'>
                         <div className="row">
-                            {/* <div className="profile-img">
-                                <div className="col-md-4">
-                                    <img src={profileImage}
-                                        alt="Preview"
-                                        width="100"/>
-                                </div>
-                            </div> */}
+                            <div className="profile-img">
+                                {/* <div className="col-md-4">
+                        <img src={profile.picture} alt="Profile"/>
+                        </div> */}
+                            </div>
                             <div className="col-md-6">
                                 <div className="profile-head">
                                     <h2>{profile.name}</h2>
@@ -49,7 +50,6 @@ const Profile = ({ loadUserProfile, profile, email,profileImage }) => {
                                     </div>
                                 </div>
 
-
                                 <div className="row">
                                     <div className="col-md-6">
                                         <label>Contact Number</label>
@@ -58,7 +58,6 @@ const Profile = ({ loadUserProfile, profile, email,profileImage }) => {
                                         <p>{profile.contact}</p>
                                     </div>
                                 </div>
-
 
                                 <div className="row">
                                     <div className="col-md-6">
@@ -69,7 +68,6 @@ const Profile = ({ loadUserProfile, profile, email,profileImage }) => {
                                     </div>
                                 </div>
 
-
                                 <div className="row">
                                     <div className="col-md-6">
                                         <label>Designation</label>
@@ -78,7 +76,6 @@ const Profile = ({ loadUserProfile, profile, email,profileImage }) => {
                                         <p>{profile.designation}</p>
                                     </div>
                                 </div>
-
 
                                 <div className="row">
                                     <div className="col-md-6 ">
@@ -89,7 +86,6 @@ const Profile = ({ loadUserProfile, profile, email,profileImage }) => {
                                     </div>
                                 </div>
 
-
                                 <div className="row">
                                     <div className="col-md-6">
                                         <label>Radio Set Details</label>
@@ -99,16 +95,14 @@ const Profile = ({ loadUserProfile, profile, email,profileImage }) => {
                                     </div>
                                 </div>
 
-
                                 <div className="row">
                                     <div className="col-md-6">
                                         <label>Location</label>
                                     </div>
                                     <div className="col-md-6 text-style">
-                                        <CurrentLocation />
+                                        <CurrentLocation/>
                                     </div>
                                 </div>
-
 
                             </div>
                         </div>
