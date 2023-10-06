@@ -3,8 +3,10 @@ import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { adddelfreq } from '../actions/auth';
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 
 const AddDelFreq = ({ adddelfreq, isAuthenticated }) => {
+    const history = useHistory();
     const [bandCreated, setBandCreated] = useState(false);
     const [formData, setFormData] = useState({
         frequency_type: '',
@@ -35,8 +37,13 @@ const AddDelFreq = ({ adddelfreq, isAuthenticated }) => {
         e.preventDefault();
         adddelfreq(frequency_type, frequency_fm, frequency_to, channel_spacing);
         setBandCreated(true);
-
+        history.push('/select-frequency');
     };
+
+    // if(isAuthenticated)
+    // {
+    //     return <Redirect to='/select-frequency' />
+    // }
 
 
     return (
