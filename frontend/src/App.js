@@ -12,7 +12,7 @@ import Facebook from './containers/Facebook';
 import Google from './containers/Google';
 import CreateProfile from './containers/CreateProfile';
 import Profile from './containers/Profile';
-import SelectFrequency from './containers/SelectFrequency';
+import BandsAvailable from './containers/BandsAvailable';
 import FrequencyVhf from './containers/vhf';
 import FrequencyHf from './containers/hf.js';
 import AddDelFreq from './containers/AddDelFreq';
@@ -37,7 +37,7 @@ const App = () => (
                     <Route exact path='/activate/:uid/:token' component={Activate} />
                     <Route exact path='/create-profile' component={CreateProfile} />
                     <Route exact path='/profile' component={Profile} />
-                    <Route exact path='/select-frequency' component ={SelectFrequency}/>
+                    <Route exact path='/select-frequency' component ={BandsAvailable}/>
                     <Route exact path='/frequency-vhf' component ={FrequencyVhf}/>
                     <Route exact path='/frequency-hf' component ={FrequencyHf}/>
                     <Route exact path='/add-del-frequency' component ={AddDelFreq}/>

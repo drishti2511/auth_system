@@ -52,3 +52,10 @@ class UserProfileDetailView(generics.RetrieveAPIView):
 class BandFrequencyViewSet(viewsets.ModelViewSet):
     queryset = BandFrequency.objects.all()
     serializer_class = BandFrequencySerializer
+
+
+@authentication_classes([])
+@permission_classes([AllowAny])
+class BandFrequencyDataDetail(generics.ListAPIView):
+    queryset = BandFrequency.objects.all()
+    serializer_class = BandFrequencySerializer
