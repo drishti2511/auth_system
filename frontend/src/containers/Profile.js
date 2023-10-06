@@ -7,13 +7,7 @@ import CurrentLocation from './CurrentLocation';
 // import image
 
 
-<<<<<<< HEAD
-
-
-const Profile = ({ loadUserProfile, profile, email,profileImage }) => {
-=======
 const Profile = ({ loadUserProfile, profile, email }) => {
->>>>>>> ebb549f (made the css of frontend, added location, now working on adding images)
     useEffect(() => {
         loadUserProfile(email);
     }, [loadUserProfile, email]);

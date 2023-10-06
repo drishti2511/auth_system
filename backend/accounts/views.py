@@ -47,12 +47,8 @@ class UserProfileDetailView(generics.RetrieveAPIView):
 
 
 
-
-class BandFreqView(generics.CreateAPIView):
+@authentication_classes([])
+@permission_classes([AllowAny])
+class BandFrequencyViewSet(viewsets.ModelViewSet):
     queryset = BandFrequency.objects.all()
     serializer_class = BandFrequencySerializer
-    permission_classes = [AllowAny]
-   
-    def perform_create(self, serializer):
-        # Automatically set the student to the currently logged-in user
-        serializer.save(user_band=self.request.user)
