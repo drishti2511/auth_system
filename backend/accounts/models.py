@@ -94,6 +94,7 @@ class BandFrequency(models.Model):
     frequency_fm = models.CharField(max_length=255)
     frequency_to = models.CharField(max_length=255)
     channel_spacing = models.CharField(max_length=255)
+    band_frequency = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='band_frequencies',blank=True)
 
     def __str__(self):
         return self.frequency_type

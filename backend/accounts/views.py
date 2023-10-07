@@ -12,6 +12,9 @@ from rest_framework import status
 from rest_framework.decorators import authentication_classes, permission_classes,api_view
 from rest_framework.permissions import IsAuthenticated
 import logging
+from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist  # Import ObjectDoesNotExist
+from rest_framework.views import APIView
 logger = logging.getLogger(__name__)
 
 
@@ -59,3 +62,37 @@ class BandFrequencyViewSet(viewsets.ModelViewSet):
 class BandFrequencyDataDetail(generics.ListAPIView):
     queryset = BandFrequency.objects.all()
     serializer_class = BandFrequencySerializer
+
+
+
+@authentication_classes([])
+@permission_classes([AllowAny])
+class BandAssociationView(APIView):
+    def get(self, request, email):
+        try:
+            user_profile = settings.AUTH_USER_MODEL.objects.get(email=email)
+            bands = user_profile.band_frequency.all()
+            serializer = BandFrequencySerializer(bands, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except ObjectDoesNotExist:
+            return Response({'detail': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    def post(self, request, email, band_id):
+        try:
+            user_profile = settings.AUTH_USER_MODEL.objects.get(email=email)
+            band = BandFrequency.objects.get(id=band_id)
+            user_profile.band_frequency.add(band)
+            user_profile.save()
+            return Response({'success': True}, status=status.HTTP_201_CREATED)
+        except ObjectDoesNotExist:
+            return Response({'success': False, 'error': 'User or band not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    def delete(self, request, email, band_id):
+        try:
+            user_profile = settings.AUTH_USER_MODEL.objects.get(email=email)
+            band = BandFrequency.objects.get(id=band_id)
+            user_profile.band_frequency.remove(band)
+            user_profile.save()
+            return Response({'success': True}, status=status.HTTP_204_NO_CONTENT)
+        except ObjectDoesNotExist:
+            return Response({'success': False, 'error': 'User or band not found'}, status=status.HTTP_404_NOT_FOUND)

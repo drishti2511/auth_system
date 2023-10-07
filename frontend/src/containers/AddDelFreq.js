@@ -67,6 +67,7 @@ const AddDelFreq = ({ adddelfreq, isAuthenticated }) => {
                     </select>
                 </div>
                 <div className='form-group'>
+                <label for="staticEmail" class="col-sm-6 col-form-label">Frequency From (in MHz)</label>
                     <input
                         className='form-control'
                         type='text'
@@ -78,6 +79,7 @@ const AddDelFreq = ({ adddelfreq, isAuthenticated }) => {
                     />
                 </div>
                 <div className='form-group'>
+                <label for="staticEmail" class="col-sm-6 col-form-label">Frequency To (in MHz)</label>
                     <input
                         className='form-control'
                         type='text'
@@ -89,6 +91,7 @@ const AddDelFreq = ({ adddelfreq, isAuthenticated }) => {
                     />
                 </div>
                 <div className='form-group'>
+                <label for="staticEmail" class="col-sm-6 col-form-label">Channel Spacing (in MHz)</label>
                     <input
                         className='form-control'
                         type='text'
