@@ -32,7 +32,20 @@ const BandsAvailable = ({ email }) => {
         return option ? option.label : value; // Return the label if found, otherwise return the value itself
     }
 
+    useEffect(() => {
+    fetch('http://localhost:8000/all-associated-bands/')  // Use the actual URL
+        .then((response) => response.json())
+        .then((result) => {
+            setSelectedBandsOverall(result);
+            console.log('All Associated Bands:', result);
+        })
+        .catch((error) => {
+            console.error('Error fetching all associated bands:', error);
+        });
+    }, []);
+
     function handleBandSelection(bandId) {
+
         const isChecked = selectedBands.includes(bandId);
         console.log(isChecked);
         // Send a POST request to your Django endpoint to associate the user with the selected band
@@ -74,15 +87,7 @@ const BandsAvailable = ({ email }) => {
                 });
         }
 
-        fetch('http://localhost:8000/all-associated-bands/')  // Use the actual URL
-        .then((response) => response.json())
-        .then((result) => {
-            setSelectedBandsOverall(result);
-            console.log('All Associated Bands:', result);
-        })
-        .catch((error) => {
-            console.error('Error fetching all associated bands:', error);
-        });
+       
 
     }
 
@@ -103,7 +108,7 @@ const BandsAvailable = ({ email }) => {
                     {data.map((item) => (
                         <tr
                             key={item.id}
-                            className={selectedBandsOverall.includes(item.id) ? 'red-row' : 'green-row'}
+                            className={selectedBandsOverall.includes(item.id) || selectedBands.includes(item.id)? 'red-row' : 'green-row'}
                         >
                             <td>{getLabelByValue(item.frequency_type)}</td>
                             <td>{item.frequency_fm}</td>

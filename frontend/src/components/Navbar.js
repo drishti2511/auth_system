@@ -39,7 +39,7 @@ const Navbar = ({ logout, isAuthenticated }) => {
                 <Link className='nav-link' to='/select-frequency' align='left'>Bands Available</Link>
             </li>
             <li className='nav-item'>
-                <Link className='nav-link' to='/add-del-frequency' align='left'>Add/Delete Frequency</Link>
+                <Link className='nav-link' to='/add-del-frequency' align='left'>Add Frequency</Link>
             </li>
         </Fragment>
 
