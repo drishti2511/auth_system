@@ -22,6 +22,8 @@ class BandFrequencyViewSet(viewsets.ModelViewSet):
         instance = self.get_object()
         instance.is_available = False
         instance.save()
+        
+        queryset = BandFrequency.objects.order_by('frequency_fm')
 
         serializer = self.get_serializer(instance)
         return Response(serializer.data)

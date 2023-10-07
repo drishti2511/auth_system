@@ -31,31 +31,50 @@ const BandsAvailable = ({ email }) => {
         return option ? option.label : value; // Return the label if found, otherwise return the value itself
     }
 
-    function handleBandSelection(bandId) {
-        const isChecked = selectedBands.includes(bandId);
-        console.log(isChecked);
-        // Send a POST request to your Django endpoint to associate the user with the selected band
-        const url = `http://localhost:8000/associate-band/${email}/${bandId}/`;
-        console.log(url);
-        fetch(`http://localhost:8000/associate-band/${email}/${bandId}/`, {
-            method: isChecked ? 'DELETE' : 'POST',
-        })
-            .then((response) => response.json())
-            .then((result) => {
-                if (result.success) {
-                    console.log('inside if statement');
-                    setSelectedBands((prevSelectedBands) =>
-                        isChecked
-                            ? prevSelectedBands.filter((id) => id !== bandId)
-                            : [...prevSelectedBands, bandId]
-                    );
+    // function handleBandSelection(bandId) {
+    //     const isChecked = selectedBands.includes(bandId);
+    //     console.log(isChecked);
+    //     // Send a POST request to your Django endpoint to associate the user with the selected band
+    //     const url = `http://localhost:8000/associate-band/${email}/${bandId}/`;
+    //     console.log(url);
+    //     fetch(`http://localhost:8000/associate-band/${email}/${bandId}/`, {
+    //         method: isChecked ? 'DELETE' : 'POST',
+    //     })
+    //         .then((response) => response.json())
+    //         .then((result) => {
+    //             if (result.success) {
+    //                 console.log('inside if statement');
+    //                 setSelectedBands((prevSelectedBands) =>
+    //                     isChecked
+    //                         ? prevSelectedBands.filter((id) => id !== bandId)
+    //                         : [...prevSelectedBands, bandId]
+    //                 );
+    //             }
+    //         })
+    //         .catch((error) => {
+    //             console.error('Error associating band with user:', error);
+    //         });
+    // }
+
+    function handleBandSelection(id) {
+        // Send a request to the backend to update the is_available field
+        axios.put(`/api/bandfrequency/${id}/`, { is_available: false })
+            .then(response => {
+                // Check if the frequency band is already selected by another user
+                if (!response.data.is_available) {
+                    alert('This frequency band is already selected by another user.');
+                    return;
                 }
-            })
-            .catch((error) => {
-                console.error('Error associating band with user:', error);
+
+                // Update the state to reflect the changes
+                setSelectedBands(prevBands => {
+                    const newBands = [...prevBands];
+                    const index = newBands.findIndex(band => band.id === id);
+                    newBands[index] = response.data;
+                    return newBands;
+                });
             });
     }
-
     return (
         <div>
             <h1>Frequency Data List</h1>
