@@ -6,7 +6,7 @@ from rest_framework.routers import DefaultRouter
 from accounts.views import ProfileCreateView
 from accounts.views import UserProfileDetailView
 from accounts.views import BandFrequencyViewSet
-from accounts.views import BandFrequencyDataDetail, BandAssociationView
+from accounts.views import BandFrequencyDataDetail, BandAssociationView, AllAssociatedBandsView
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -26,6 +26,7 @@ urlpatterns = [
     path('available-frequency/', BandFrequencyDataDetail.as_view(), name='band-freq-available'),
     path('associate-band/<str:email>/<int:band_id>/', BandAssociationView.as_view(), name='associate-band'),
     path('associate-band/<str:email>/<int:band_id>/', BandAssociationView.as_view(), name='disassociate-band'),
+    path('all-associated-bands/', AllAssociatedBandsView.as_view(), name='all-associated-bands'),
     # path('', include(router.urls)),
 ]
 

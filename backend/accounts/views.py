@@ -96,3 +96,16 @@ class BandAssociationView(APIView):
             return Response({'success': True}, status=status.HTTP_204_NO_CONTENT)
         except ObjectDoesNotExist:
             return Response({'success': False, 'error': 'User or band not found'}, status=status.HTTP_404_NOT_FOUND)
+
+
+
+@authentication_classes([])
+@permission_classes([AllowAny])
+class AllAssociatedBandsView(APIView):
+    def get(self, request):
+        try:
+            # Get all associated band IDs
+            band_ids = UserProfileAccount.objects.values_list('band_frequency', flat=True)
+            return Response(band_ids, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

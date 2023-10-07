@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 const BandsAvailable = ({ email }) => {
     const [data, setData] = useState([]);
     const [selectedBands, setSelectedBands] = useState([]);
+    const [selectedBandsOverall, setSelectedBandsOverall] = useState([]);
     useEffect(() => {
         fetch('http://localhost:8000/available-frequency/')  // Update the URL as per your Django server configuration
             .then((response) => response.json())
@@ -37,10 +38,9 @@ const BandsAvailable = ({ email }) => {
         // Send a POST request to your Django endpoint to associate the user with the selected band
         const url = `http://localhost:8000/associate-band/${email}/${bandId}/`;
         console.log(url);
-        if(isChecked)
-        {
+        if (isChecked) {
             fetch(`http://localhost:8000/associate-band/${email}/${bandId}/`, {
-                method:'DELETE' ,
+                method: 'DELETE',
             }).then((response) => {
                 if (response.status === 204) {
                     console.log('inside if statement');
@@ -48,24 +48,24 @@ const BandsAvailable = ({ email }) => {
                         if (prevSelectedBands.includes(bandId)) {
                             // If the band is already selected, remove it
                             return prevSelectedBands.filter((id) => id !== bandId);
-                        } 
+                        }
                     });
                 }
             })
                 .catch((error) => {
                     console.error('Error associating band with user:', error);
                 });
+
         }
-        else
-        { 
+        else {
             fetch(`http://localhost:8000/associate-band/${email}/${bandId}/`, {
-                method:'POST',
+                method: 'POST',
             }).then((response) => response.json()).then((result) => {
                 if (result.success) {
                     console.log('inside if statement');
                     setSelectedBands((prevSelectedBands) => {
-                            // If the band is not selected, add it
-                            return [...prevSelectedBands, bandId];
+                        // If the band is not selected, add it
+                        return [...prevSelectedBands, bandId];
                     });
                 }
             })
@@ -73,7 +73,17 @@ const BandsAvailable = ({ email }) => {
                     console.error('Error associating band with user:', error);
                 });
         }
-        
+
+        fetch('http://localhost:8000/all-associated-bands/')  // Use the actual URL
+        .then((response) => response.json())
+        .then((result) => {
+            setSelectedBandsOverall(result);
+            console.log('All Associated Bands:', result);
+        })
+        .catch((error) => {
+            console.error('Error fetching all associated bands:', error);
+        });
+
     }
 
     return (
@@ -91,8 +101,10 @@ const BandsAvailable = ({ email }) => {
                 </thead>
                 <tbody>
                     {data.map((item) => (
-                        <tr key={item.id}>
-                            {/* <td>{item.id}</td> */}
+                        <tr
+                            key={item.id}
+                            className={selectedBandsOverall.includes(item.id) ? 'red-row' : 'green-row'}
+                        >
                             <td>{getLabelByValue(item.frequency_type)}</td>
                             <td>{item.frequency_fm}</td>
                             <td>{item.frequency_to}</td>
