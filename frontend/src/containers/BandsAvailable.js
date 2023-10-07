@@ -3,7 +3,7 @@ import './BandsAvailable.css'
 import Select from 'react-select';
 import { connect } from 'react-redux';
 
-const BandsAvailable = ({email}) => {
+const BandsAvailable = ({ email }) => {
     const [data, setData] = useState([]);
     const [selectedBands, setSelectedBands] = useState([]);
     useEffect(() => {
@@ -30,30 +30,50 @@ const BandsAvailable = ({email}) => {
         const option = frequencyOptions.find(option => option.value === value);
         return option ? option.label : value; // Return the label if found, otherwise return the value itself
     }
-    
+
     function handleBandSelection(bandId) {
         const isChecked = selectedBands.includes(bandId);
         console.log(isChecked);
         // Send a POST request to your Django endpoint to associate the user with the selected band
         const url = `http://localhost:8000/associate-band/${email}/${bandId}/`;
         console.log(url);
-        fetch(`http://localhost:8000/associate-band/${email}/${bandId}/`, {
-            method: isChecked ? 'DELETE' : 'POST', 
-        })
-        .then((response) => response.json())
-        .then((result) => {
-            if (result.success) {
-                console.log('inside if statement');
-                setSelectedBands((prevSelectedBands) =>
-                    isChecked
-                        ? prevSelectedBands.filter((id) => id !== bandId)
-                        : [...prevSelectedBands, bandId]
-                );
-            }
-        })
-        .catch((error) => {
-            console.error('Error associating band with user:', error);
-        });
+        if(isChecked)
+        {
+            fetch(`http://localhost:8000/associate-band/${email}/${bandId}/`, {
+                method:'DELETE' ,
+            }).then((response) => {
+                if (response.status === 204) {
+                    console.log('inside if statement');
+                    setSelectedBands((prevSelectedBands) => {
+                        if (prevSelectedBands.includes(bandId)) {
+                            // If the band is already selected, remove it
+                            return prevSelectedBands.filter((id) => id !== bandId);
+                        } 
+                    });
+                }
+            })
+                .catch((error) => {
+                    console.error('Error associating band with user:', error);
+                });
+        }
+        else
+        { 
+            fetch(`http://localhost:8000/associate-band/${email}/${bandId}/`, {
+                method:'POST',
+            }).then((response) => response.json()).then((result) => {
+                if (result.success) {
+                    console.log('inside if statement');
+                    setSelectedBands((prevSelectedBands) => {
+                            // If the band is not selected, add it
+                            return [...prevSelectedBands, bandId];
+                    });
+                }
+            })
+                .catch((error) => {
+                    console.error('Error associating band with user:', error);
+                });
+        }
+        
     }
 
     return (

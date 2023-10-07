@@ -24,7 +24,7 @@ urlpatterns = [
     path('user/profile/<str:email>/', UserProfileDetailView.as_view(), name='get_user_profile'),
     path('edit-frequency/', BandFrequencyViewSet.as_view({'get': 'list', 'post': 'create'}), name='band-freq-create'),
     path('available-frequency/', BandFrequencyDataDetail.as_view(), name='band-freq-available'),
-    path('associate-band/<str:email>/', BandAssociationView.as_view(), name='associate-band'),
+    path('associate-band/<str:email>/<int:band_id>/', BandAssociationView.as_view(), name='associate-band'),
     path('associate-band/<str:email>/<int:band_id>/', BandAssociationView.as_view(), name='disassociate-band'),
     # path('', include(router.urls)),
 ]

@@ -44,6 +44,19 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
 
 
 
+
+class BandFrequency(models.Model):
+    frequency_type = models.CharField(max_length=255)
+    frequency_fm = models.CharField(max_length=255)
+    frequency_to = models.CharField(max_length=255)
+    channel_spacing = models.CharField(max_length=255)
+    band_frequency = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='band_frequencies',blank=True)
+
+    def __str__(self):
+        return self.frequency_type
+
+        
+
 class ProfileAccountManager(BaseUserManager):
     def create_profile(self, email,**extra_fields):
         if not email:
@@ -70,6 +83,7 @@ class UserProfileAccount(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=True)
     objects = ProfileAccountManager()
     groups = models.ManyToManyField(Group, verbose_name='groups', blank=True, related_name='user_profile_accounts_groups')
+    band_frequency = models.ManyToManyField(BandFrequency, blank=True)
     user_permissions = models.ManyToManyField(
         Permission,
         verbose_name='user permissions',
@@ -89,14 +103,5 @@ class UserProfileAccount(AbstractBaseUser, PermissionsMixin):
 
 
 
-class BandFrequency(models.Model):
-    frequency_type = models.CharField(max_length=255)
-    frequency_fm = models.CharField(max_length=255)
-    frequency_to = models.CharField(max_length=255)
-    channel_spacing = models.CharField(max_length=255)
-    band_frequency = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='band_frequencies',blank=True)
-
-    def __str__(self):
-        return self.frequency_type
 
 

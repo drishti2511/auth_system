@@ -70,7 +70,7 @@ class BandFrequencyDataDetail(generics.ListAPIView):
 class BandAssociationView(APIView):
     def get(self, request, email):
         try:
-            user_profile = settings.AUTH_USER_MODEL.objects.get(email=email)
+            user_profile = UserProfileAccount.objects.get(email=email)
             bands = user_profile.band_frequency.all()
             serializer = BandFrequencySerializer(bands, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -79,7 +79,7 @@ class BandAssociationView(APIView):
 
     def post(self, request, email, band_id):
         try:
-            user_profile = settings.AUTH_USER_MODEL.objects.get(email=email)
+            user_profile = UserProfileAccount.objects.get(email=email)
             band = BandFrequency.objects.get(id=band_id)
             user_profile.band_frequency.add(band)
             user_profile.save()
@@ -89,7 +89,7 @@ class BandAssociationView(APIView):
 
     def delete(self, request, email, band_id):
         try:
-            user_profile = settings.AUTH_USER_MODEL.objects.get(email=email)
+            user_profile = UserProfileAccount.objects.get(email=email)
             band = BandFrequency.objects.get(id=band_id)
             user_profile.band_frequency.remove(band)
             user_profile.save()
