@@ -6,6 +6,11 @@ from .models import BandFrequency
 from django.contrib.auth.models import Group
 User = get_user_model()
 
+class BandFrequencySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BandFrequency
+        fields = ('id','frequency_type', 'frequency_fm', 'frequency_to', 'channel_spacing', 'is_available')
+
 class UserCreateSerializer(UserCreateSerializer):
     user_accounts_groups = serializers.PrimaryKeyRelatedField(many=True,queryset=Group.objects.all(), required=False)
     class Meta(UserCreateSerializer.Meta):

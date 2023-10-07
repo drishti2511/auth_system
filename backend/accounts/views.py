@@ -17,6 +17,14 @@ from django.core.exceptions import ObjectDoesNotExist  # Import ObjectDoesNotExi
 from rest_framework.views import APIView
 logger = logging.getLogger(__name__)
 
+class BandFrequencyViewSet(viewsets.ModelViewSet):
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.is_available = False
+        instance.save()
+
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
 
 class ProfileCreateView(generics.CreateAPIView):
     queryset = UserProfileAccount.objects.all()

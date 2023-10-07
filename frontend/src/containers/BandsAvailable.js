@@ -3,7 +3,7 @@ import './BandsAvailable.css'
 import Select from 'react-select';
 import { connect } from 'react-redux';
 
-const BandsAvailable = ({email}) => {
+const BandsAvailable = ({ email }) => {
     const [data, setData] = useState([]);
     const [selectedBands, setSelectedBands] = useState([]);
     useEffect(() => {
@@ -30,7 +30,7 @@ const BandsAvailable = ({email}) => {
         const option = frequencyOptions.find(option => option.value === value);
         return option ? option.label : value; // Return the label if found, otherwise return the value itself
     }
-    
+
     function handleBandSelection(bandId) {
         const isChecked = selectedBands.includes(bandId);
         console.log(isChecked);
@@ -38,22 +38,22 @@ const BandsAvailable = ({email}) => {
         const url = `http://localhost:8000/associate-band/${email}/${bandId}/`;
         console.log(url);
         fetch(`http://localhost:8000/associate-band/${email}/${bandId}/`, {
-            method: isChecked ? 'DELETE' : 'POST', 
+            method: isChecked ? 'DELETE' : 'POST',
         })
-        .then((response) => response.json())
-        .then((result) => {
-            if (result.success) {
-                console.log('inside if statement');
-                setSelectedBands((prevSelectedBands) =>
-                    isChecked
-                        ? prevSelectedBands.filter((id) => id !== bandId)
-                        : [...prevSelectedBands, bandId]
-                );
-            }
-        })
-        .catch((error) => {
-            console.error('Error associating band with user:', error);
-        });
+            .then((response) => response.json())
+            .then((result) => {
+                if (result.success) {
+                    console.log('inside if statement');
+                    setSelectedBands((prevSelectedBands) =>
+                        isChecked
+                            ? prevSelectedBands.filter((id) => id !== bandId)
+                            : [...prevSelectedBands, bandId]
+                    );
+                }
+            })
+            .catch((error) => {
+                console.error('Error associating band with user:', error);
+            });
     }
 
     return (
@@ -83,6 +83,9 @@ const BandsAvailable = ({email}) => {
                                     checked={selectedBands.includes(item.id)}
                                     onChange={() => handleBandSelection(item.id)}
                                 />
+                            </td>
+                            <td style={{ color: item.is_available ? 'green' : 'red' }}>
+                                {item.is_available ? 'Available' : 'Unavailable'}
                             </td>
                         </tr>
                     ))}
