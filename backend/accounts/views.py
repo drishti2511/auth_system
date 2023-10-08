@@ -107,5 +107,6 @@ class AllAssociatedBandsView(APIView):
             # Get all associated band IDs
             band_ids = UserProfileAccount.objects.values_list('band_frequency', flat=True)
             return Response(band_ids, status=status.HTTP_200_OK)
+            
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

@@ -16,6 +16,7 @@ import BandsAvailable from './containers/BandsAvailable';
 import FrequencyVhf from './containers/vhf';
 import FrequencyHf from './containers/hf.js';
 import AddDelFreq from './containers/AddDelFreq';
+import DeleteFrequency from './containers/DeleteFrequency';
 
 import { Provider } from 'react-redux';
 import store from './store';
@@ -41,6 +42,7 @@ const App = () => (
                     <Route exact path='/frequency-vhf' component ={FrequencyVhf}/>
                     <Route exact path='/frequency-hf' component ={FrequencyHf}/>
                     <Route exact path='/add-del-frequency' component ={AddDelFreq}/>
+                    <Route exact path='/del-frequency' component ={DeleteFrequency}/>
                 </Switch>
             </Layout>
         </Router>

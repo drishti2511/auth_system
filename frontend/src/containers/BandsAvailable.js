@@ -33,22 +33,26 @@ const BandsAvailable = ({ email }) => {
     }
 
     useEffect(() => {
-    fetch('http://localhost:8000/all-associated-bands/')  // Use the actual URL
-        .then((response) => response.json())
-        .then((result) => {
-            setSelectedBandsOverall(result);
-            console.log('All Associated Bands:', result);
-        })
-        .catch((error) => {
-            console.error('Error fetching all associated bands:', error);
-        });
+        fetch('http://localhost:8000/all-associated-bands/')  // Use the actual URL
+            .then((response) => response.json())
+            .then((result) => {
+                setSelectedBandsOverall(result);
+                console.log('All Associated Bands:', result);
+                const rowExists = selectedBandsOverall.some((row) => row.id === 4);
+                console.log('checking rowExists');
+                console.log(rowExists);
+                console.log('checking rowExists');
+            })
+            .catch((error) => {
+                console.error('Error fetching all associated bands:', error);
+            });
     }, []);
 
     function handleBandSelection(bandId) {
 
         const isChecked = selectedBands.includes(bandId);
         console.log(isChecked);
-        // Send a POST request to your Django endpoint to associate the user with the selected band
+
         const url = `http://localhost:8000/associate-band/${email}/${bandId}/`;
         console.log(url);
         if (isChecked) {
@@ -76,6 +80,7 @@ const BandsAvailable = ({ email }) => {
             }).then((response) => response.json()).then((result) => {
                 if (result.success) {
                     console.log('inside if statement');
+                    console.log('result');
                     setSelectedBands((prevSelectedBands) => {
                         // If the band is not selected, add it
                         return [...prevSelectedBands, bandId];
@@ -87,7 +92,7 @@ const BandsAvailable = ({ email }) => {
                 });
         }
 
-       
+
 
     }
 
@@ -108,7 +113,7 @@ const BandsAvailable = ({ email }) => {
                     {data.map((item) => (
                         <tr
                             key={item.id}
-                            className={selectedBandsOverall.includes(item.id) || selectedBands.includes(item.id)? 'red-row' : 'green-row'}
+                            className={selectedBandsOverall.includes(item.id) || selectedBands.includes(item.id) ? 'red-row' : 'green-row'}
                         >
                             <td>{getLabelByValue(item.frequency_type)}</td>
                             <td>{item.frequency_fm}</td>

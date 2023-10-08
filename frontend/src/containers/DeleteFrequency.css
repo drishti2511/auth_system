@@ -1,0 +1,40 @@
+/* Style the table */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  /* Style the table header */
+  th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    text-align: left;
+    padding: 8px;
+  }
+  
+  /* Style the table rows */
+  /* tr:nth-child(even) {
+    background-color: #f2f2f2;
+  } */
+  
+  /* Style the table data cells */
+  td {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  /* Highlight the table rows on hover */
+  tr:hover {
+    background-color: #5f7371;
+  }
+  
+  .red-row {
+    background-color: rgb(213, 73, 73);
+    /* Add any other styles you want for red rows */
+}
+
+.green-row {
+    background-color: rgb(74, 189, 74);
+    /* Add any other styles you want for green rows */
+}
