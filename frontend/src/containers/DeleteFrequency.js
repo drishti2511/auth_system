@@ -90,10 +90,12 @@ const DeleteFrequency = ({ email }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {data.map((item) => (
+                    {data
+                    .filter((item) => selectedBandsOverall.includes(item.id))
+                    .map((item) => (
                         <tr
                             key={item.id}
-                            className={selectedBandsOverall.includes(item.id)? 'red-row' : 'green-row'}
+                            className="red-row" // Assuming you want to mark all these rows as 'red-row'
                         >
                             <td>{getLabelByValue(item.frequency_type)}</td>
                             <td>{item.frequency_fm}</td>
